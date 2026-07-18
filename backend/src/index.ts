@@ -3,8 +3,8 @@ import path from "path";
 import http from "http";
 import fs from "fs";
 import { fileURLToPath } from "url";
-import { galleryRouter } from "./gallery.js";
-import { setupGallerySocket } from "./gallerySocket.js";
+import { settingsRouter } from "./settings.js";
+import { setupSettingsSocket } from "./settingsSocket.js";
 
 const app = express();
 const PORT = 3000;
@@ -31,7 +31,7 @@ const storeFile = path.join(dataDir, "store.json");
   if (!fs.existsSync(storeFile)) {
     const defaultStore = {
       gallery: [],
-      settings: { activeGalleryItemId: null },
+      settings: { activeGalleryItemId: null, offsetTop: 0, offsetBottom: 0 },
     };
     fs.writeFileSync(storeFile, JSON.stringify(defaultStore, null, 2));
     console.log(`Created default store.json at ${storeFile}`);
@@ -44,7 +44,7 @@ const storeFile = path.join(dataDir, "store.json");
 
   // Gallery API
   app.use(express.json());
-  app.use("/api/gallery", galleryRouter);
+  app.use("/api", settingsRouter);
 
   // Serving static frontend files
   app.use(express.static(frontendDist));
@@ -62,7 +62,7 @@ const storeFile = path.join(dataDir, "store.json");
 })();
 
 const server = http.createServer(app);
-setupGallerySocket(server);
+setupSettingsSocket(server);
 
 server.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);

@@ -25,27 +25,44 @@
   onDestroy(() => {
     ws?.close();
   });
+
+  $effect(() => {
+    document.documentElement.style.setProperty("--offset-bottom", `${store?.settings.offsetBottom ?? 0}px`);
+    document.documentElement.style.setProperty("--offset-top", `${store?.settings.offsetTop ?? 0}px`);
+  });
 </script>
 
-{#if activeItem}
-  {#if activeItem.type === "image"}
-    <img src={`/media/${activeItem.id}${activeItem.ext}`} alt={activeItem.displayname} />
+<div class="wrapper">
+  {#if activeItem}
+    {#if activeItem.type === "image"}
+      <img src={`/media/${activeItem.id}${activeItem.ext}`} alt={activeItem.displayname} />
+    {:else}
+      <video src={`/media/${activeItem.id}${activeItem.ext}`} autoplay loop muted></video>
+    {/if}
   {:else}
-    <video src={`/media/${activeItem.id}${activeItem.ext}`} autoplay loop muted></video>
+    <p>No active item set.</p>
   {/if}
-{:else}
-  <p>No active item set.</p>
-{/if}
+</div>
 
 <style>
+  :root {
+    --offset-bottom: 0px;
+    --offset-top: 0px;
+  }
+
   img,
   video {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    display: block;
     margin: 0;
     padding: 0;
-    height: 100vh;
-    width: 100vw;
+    height: calc(100svw - var(--offset-bottom) - var(--offset-top));
+    width: 100svh;
     overflow: hidden;
     object-fit: cover;
     object-position: center;
+    transform: translate(calc(-50% + (var(--offset-bottom) - var(--offset-top)) / 2), -50%) rotate(90deg);
   }
 </style>

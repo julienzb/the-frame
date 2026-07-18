@@ -1,27 +1,29 @@
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs';
-import path from 'path';
-import { EventEmitter } from 'events';
+import { readFileSync, writeFileSync, existsSync, mkdirSync } from "fs";
+import path from "path";
+import { EventEmitter } from "events";
 
-const DATA_DIR = path.resolve('data');
-const STORE_PATH = path.join(DATA_DIR, 'store.json');
+const DATA_DIR = path.resolve("data");
+const STORE_PATH = path.join(DATA_DIR, "store.json");
 
 export interface GalleryItem {
   id: string;
   ext: string;
   displayname: string;
-  type: 'image' | 'video';
+  type: "image" | "video";
   createdAt: number;
 }
 
 export interface Store {
   settings: {
     activeGalleryItemId: string | null;
+    offsetBottom: number | null;
+    offsetTop: number | null;
   };
   gallery: GalleryItem[];
 }
 
 const defaultStore: Store = {
-  settings: { activeGalleryItemId: null },
+  settings: { activeGalleryItemId: null, offsetBottom: 0, offsetTop: 0 },
   gallery: [],
 };
 
@@ -35,11 +37,11 @@ export function readStore(): Store {
     writeStore(defaultStore);
     return defaultStore;
   }
-  const raw = readFileSync(STORE_PATH, 'utf-8');
+  const raw = readFileSync(STORE_PATH, "utf-8");
   return JSON.parse(raw);
 }
 
 export function writeStore(store: Store): void {
   writeFileSync(STORE_PATH, JSON.stringify(store, null, 2));
-  storeEvents.emit('change', store);
+  storeEvents.emit("change", store);
 }

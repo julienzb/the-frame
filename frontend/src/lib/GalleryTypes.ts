@@ -9,6 +9,8 @@ export interface GalleryItem {
 export interface Store {
   settings: {
     activeGalleryItemId: string | null;
+    offsetBottom: number | null;
+    offsetTop: number | null;
   };
   gallery: GalleryItem[];
 }
