@@ -6,7 +6,7 @@ import path from "path";
 export const settingsRouter = Router();
 
 // Upload a new file
-settingsRouter.post("/upload", upload.single("file"), (req, res) => {
+settingsRouter.post("/gallery/upload", upload.single("file"), (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: "No valid file uploaded" });
   }

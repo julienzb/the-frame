@@ -2,6 +2,7 @@ import express from "express";
 import path from "path";
 import http from "http";
 import fs from "fs";
+import { defaultStore } from "./store.js";
 import { fileURLToPath } from "url";
 import { settingsRouter } from "./settings.js";
 import { setupSettingsSocket } from "./settingsSocket.js";
@@ -29,10 +30,6 @@ const storeFile = path.join(dataDir, "store.json");
   }
 
   if (!fs.existsSync(storeFile)) {
-    const defaultStore = {
-      gallery: [],
-      settings: { activeGalleryItemId: null, offsetTop: 0, offsetBottom: 0 },
-    };
     fs.writeFileSync(storeFile, JSON.stringify(defaultStore, null, 2));
     console.log(`Created default store.json at ${storeFile}`);
   }

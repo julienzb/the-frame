@@ -22,7 +22,7 @@ export interface Store {
   gallery: GalleryItem[];
 }
 
-const defaultStore: Store = {
+export const defaultStore: Store = {
   settings: { activeGalleryItemId: null, offsetBottom: 0, offsetTop: 0 },
   gallery: [],
 };

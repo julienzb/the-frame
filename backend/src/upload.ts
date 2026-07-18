@@ -1,8 +1,8 @@
-import multer from 'multer';
-import path from 'path';
-import { randomUUID } from 'crypto';
+import multer from "multer";
+import path from "path";
+import { randomUUID } from "crypto";
 
-const MEDIA_DIR = path.resolve('media');
+const MEDIA_DIR = path.resolve("media");
 
 const storage = multer.diskStorage({
   destination: (_req, _file, cb) => {
@@ -14,7 +14,7 @@ const storage = multer.diskStorage({
   },
 });
 
-const allowedExtensions = ['.jpg', '.jpeg', '.png', '.webp', '.mp4', '.webm'];
+const allowedExtensions = [".jpg", ".jpeg", ".png", ".gif", ".webp", ".mp4", ".webm", ".mov"];
 
 export const upload = multer({
   storage,
